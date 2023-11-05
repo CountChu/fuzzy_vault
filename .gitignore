@@ -1,1 +1,8 @@
 *.pyc
+*.sublime-project
+*.sublime-workspace
+sftp-config.-json
+sftp-config.json
+.gitignore
+.DS_Store
+__pycache__

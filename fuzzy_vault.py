@@ -14,6 +14,8 @@ from random import (uniform, shuffle)
 from numpy import polyfit
 import real
 
+import pdb 
+br = pdb.set_trace
 degree = 4 # degree 4 polynomial
 t = 10     # number of features in each template
 r = 40     # number of chaff points
@@ -78,7 +80,17 @@ def unlock(template, vault):
                 return [x, point[1]]
         return None
 
-    Q = zip(*[project(point) for point in template if project(point) != None])
+    print('len(vault) = %d' % len(vault))
+    Q = [[], []]                        # count
+    for point in template:
+        print('point = ', point)
+        pair = project(point)
+        if pair != None:
+            print('pair = ', pair)
+            Q[0].append(pair[0]) 
+            Q[1].append(pair[1])
+    print('Q[0] = ', Q[0])
+    print('Q[1] = ', Q[1])
     try:
         return polyfit(Q[0], Q[1], deg=degree)
     except IndexError:
@@ -90,10 +102,13 @@ def decode(coeffs):
     s = ""
     for c in coeffs:
         num = int(round(c**3))
-        if num == 0: continue
+        print('c = %f, num = %d' % (c, num))
+        if num == 0: 
+            continue
         while num > 0:
-            s += str(unichr(num % 100)).lower()
-            num /= 100
+            s += str(chr(num % 100)).lower()
+            print('s = %s, num %% 100 = %d, chr(%d) = %s' % (s, num % 100, num % 100, chr(num % 100)))
+            num //= 100                 # Count
     return s
 
 def main():
